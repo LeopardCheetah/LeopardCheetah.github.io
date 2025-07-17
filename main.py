@@ -1,4 +1,4 @@
-from nicegui import ui
+from nicegui import ui, app
 from nicegui.events import ValueChangeEventArguments
 
 def show(event: ValueChangeEventArguments):
@@ -31,4 +31,10 @@ ui.link('Visit other page', other_page)
 ui.link('Visit dark page', dark_page)
 
 
-ui.run()
+
+
+for url in app.urls:
+    print(url)
+
+
+ui.run(host="", title="my website")

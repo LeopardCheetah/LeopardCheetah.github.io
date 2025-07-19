@@ -36,6 +36,11 @@
                 max-width: 100%;
             }
 
+            p {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
             /* hyper links */
             a {
                 color:#03f;
@@ -68,12 +73,16 @@
             /* TODO - make this dark mode compliant */
             /* honestly wtf is happening */
             .project-box {
-                border-width: 10px 1em;
-                border-style: hidden;
-                border-color: #000000;
-                border-radius: 15px;
-                padding: 1px 0 1px 20px;
-                background-color: #d7f1f1;
+                --box-color: #d7f1f1;
+
+                border-width: 10px 10px;
+                border-style: solid;
+                border-color: var(--box-color);
+                border-radius: 20px;
+
+                margin-bottom: 20px; /* spacing between boxes */
+                padding: 0 0 0 10px;
+                background-color: var(--box-color);
             }
             
 
@@ -83,7 +92,7 @@
     <body>
         <header>
             <nav>
-                <a href="https://leopardcheetah.github.io/">Home</a>
+                <a href="index.html">Home</a>
                 |
                 <a href="https://github.com/LeopardCheetah">Github</a>
                 |

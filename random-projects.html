@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">  
+        <link rel="icon" type="image/png" href="/assets/images/no_face_shark_ico.png">
+        <title>Alex Z - Projects</title>
+        
+
+        <style> 
+            body {
+                width: 750px;
+                margin: 0 auto;
+                padding: 0 20px 20px 20px;
+                font-family: Helvetica, sans-serif;
+                font-size: 18px;
+                color: #222233;
+                line-height: 1.4; 
+                background-color: #f4ffff; /* super light blue */
+                /* background-color: #F0FFF0; -- honeydew green */ 
+            }
+
+            header {
+                padding: 25px 0 0 0;
+            }
+
+            nav {
+                width: 750px; 
+                margin: 0 auto;
+                padding: 0;
+            }
+
+            img {
+                display: block;
+                margin: 0 auto;
+                max-width: 100%;
+            }
+
+            /* hyper links */
+            a {
+                color:#03f;
+                text-decoration:none
+            }
+
+            hr {
+                display: block;
+                border: 0;
+                height: 10px;
+                border-top: 2px solid #000000;
+            }
+            
+            li {
+                /* top right bottom left */
+                /* add space between bullet and text */
+                padding: 0 0 0 5px;
+                list-style-type: "\25B6"; /* black triangle ▶ */
+            }
+
+            .dark-mode {
+                background-color: #212121;
+                color: #e0e0e0;
+            }
+
+            .dark-mode a {
+                color: #87cefa;
+            }
+
+            /* TODO - make this dark mode compliant */
+            .small-project-box {
+                --box-color: #d7f1db;
+
+                border-width: 10px 10px;
+                border-style: solid;
+                border-color: var(--box-color);
+                border-radius: 20px;
+
+                margin-bottom: 20px; /* spacing between boxes */
+                padding: 0 0 0 10px;
+                background-color: var(--box-color);
+            }
+
+            .small-project-title {
+                font-size: 21px;
+                font-weight: bold;
+                margin-bottom: 6px;
+            }
+
+            .small-project-p {
+                font-size: 16px;
+                margin-top: 1px;
+                margin-bottom: 3px;
+            }
+            
+
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <a href="index.html">Home</a>
+                |
+                <a href="https://github.com/LeopardCheetah">Github</a>
+                |
+                <a href="projects.html">Projects</a>
+                |
+                <a href="assets/resume.pdf">Resume</a>
+            </nav>
+
+
+        </header>
+
+        <main> <h1>(Small) Projects</h1>
+
+        <p>Below are some of the smaller things I've done. The bigger things are located <a href=projects.html>here</a>.</p>
+        
+        <hr/>
+
+        <!-- template project box
+
+        <div class="small-project-box">
+            <div class="small-project-title"><a href="???">  SOME POST  </a></div>
+            <div class="small-project-p">   desc line 1    </div>
+            <div class="small-project-p">  desc line 2 </div>
+            <div class="small-project-p"><a href="???">  Repo link i guess  </a></div>
+        </div>
+        
+
+        -->
+
+        <!-- https://github.com/LeopardCheetah/chess-3 -->
+        <!-- https://github.com/LeopardCheetah/mini-projects -> break off into maze-generator? -->
+        <!-- making playing cards? idk if there's pictures though -- just do a basic writeup maybe -->
+
+
+        <div class="small-project-box">
+            <div class="small-project-title"><a href="projects/chess-v3.html">  Chess [v3]  </a></div>
+            <div class="small-project-p"> A basic chess bot. Utilizes a 3-ply minmax search. Probably around 800 elo. </div>
+            <div class="small-project-p">Note that the bot doesn't really go for checkmate and 3 fold repetition hasn't been implemented so games can go on forever.</div>
+            <div class="small-project-p"><a href="https://github.com/LeopardCheetah/chess-3">  Github repo  </a></div>
+        </div>
+
+        
+        
+
+    </body>
+</html>
+
+
+
+
+

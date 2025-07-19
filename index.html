@@ -9,12 +9,19 @@
         <link rel="icon" type="image/png" href="/assets/images/no_face_shark_ico.png">
         <title>Alex Z</title>
 
+        <script>
+            function toggleDarkMode() {
+                var element = document.body;
+                element.classList.toggle("dark-mode");
+            }
+        </script>
+        
+
         <style> 
             body {
                 width: 600px;
                 margin: 0 auto;
                 padding: 0 20px 20px 20px;
-                background: #ffffff;
                 font-family: Helvetica, sans-serif;
                 font-size: 18px;
                 color: #222233;
@@ -66,6 +73,16 @@
                 padding: 0 0 0 5px;
             }
 
+            .dark-mode {
+                background-color: #212121;
+                color: #e0e0e0;
+            }
+
+            .dark-mode a {
+                color: #87cefa;
+            }
+            
+
         </style>
     </head>
 
@@ -80,6 +97,8 @@
                 |
                 <a href="assets/resume.pdf">Resume</a>
             </nav>
+
+
         </header>
 
         <main> <h1>Alex Zhao</h1>
@@ -98,6 +117,13 @@
         <hr/>
 
 
+        <button onclick="toggleDarkMode()">Toggle dark mode</button>
+
+
     </body>
 </html>
+
+
+
+
 

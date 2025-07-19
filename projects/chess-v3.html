@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">  
+        <link rel="icon" type="image/png" href="/assets/images/no_face_shark_ico.png">
+        <title>Alex Z - Projects</title>
+        
+
+        <style> 
+            body {
+                width: 750px;
+                margin: 0 auto;
+                padding: 0 20px 20px 20px;
+                font-family: Helvetica, sans-serif;
+                font-size: 18px;
+                color: #222233;
+                line-height: 1.4; 
+                background-color: #f4ffff; /* super light blue */
+                /* background-color: #F0FFF0; -- honeydew green */ 
+            }
+
+            header {
+                padding: 25px 0 0 0;
+            }
+
+            nav {
+                width: 750px; 
+                margin: 0 auto;
+                padding: 0;
+            }
+
+            img {
+                display: block;
+                margin: 0 auto;
+                max-width: 100%;
+            }
+
+            /* hyper links */
+            a {
+                color:#03f;
+                text-decoration:none
+            }
+
+            hr {
+                display: block;
+                border: 0;
+                height: 10px;
+                border-top: 2px solid #000000;
+            }
+            
+            li {
+                /* top right bottom left */
+                /* add space between bullet and text */
+                padding: 0 0 0 5px;
+                list-style-type: "\25B6"; /* black triangle ▶ */
+            }
+
+            .dark-mode {
+                background-color: #212121;
+                color: #e0e0e0;
+            }
+
+            .dark-mode a {
+                color: #87cefa;
+            }            
+            
+
+            .vert-space {
+                display: block;
+                height: 10px;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <nav>
+                <a href="../index.html">Home</a>
+                |
+                <a href="https://github.com/LeopardCheetah">Github</a>
+                |
+                <a href="../projects.html">Projects</a>
+                |
+                <a href="../assets/resume.pdf">Resume</a>
+            </nav>
+
+
+        </header>
+
+        <main> <h2>Chess [v3]</h2>
+        <p><i>Created May 2025</i></p>
+
+        <hr/>
+
+        <p>Chess [v3] (<a href="https://github.com/LeopardCheetah/chess-3">repo</a>) is my third iteration on a chess bot. Previously, I made v1 which just randomly selected valid moves and v2 which had a one-ply look ahead that made the bot super greedy -- it would eat any piece it saw and generally just didn't care about its pieces getting captured.</p>
+        <p>v3 now utilizes a state of the art 3-ply minmax algorithm to select moves to crush opponents. 3-ply implies that the bot looks ahead for 3 half-moves, which means it can more accurately assess captures. Notably, this means the bot is not as greedy as before.</p>
+
+        <p>
+            Anyways, some notable features of this chess bot are that it:
+            <ul>
+                <li>Can play chess.</li>
+                <li>Can sometimes make some super good moves.</li>
+                <li>Can spot <b>all</b> mate in 1s.</li>
+                <li>Can usually win most games when the opponent resigns.</li>
+                <li>Has beaten my little brother at chess.</li>
+            </ul>
+        </p>
+
+        <p>
+            Some other notable features of my bot are that it:
+            <ul>
+                <li>Gives lots of checks. I've biased my algorithm to do this so hopfeully one of these checks becomes checkmate.</li>
+                <li>Will take a piece if it attacks it twice. This is a feature of the 3-ply algorithm; the bot calculates that if it takes then you take then it takes, it'll be up material, not realizing that you might be able to take back again.</li>
+                <li>Uses a fixed algorithm. This makes it kinda predictable :/.</li>
+                <li>Sometimes breaks. En passant is weird I guess.</li>
+                <li>Does not implement draw offers. And can't detect 3-fold repetition or insufficient material situations. In other words, it either wins or loses (or gets stalemated).</li>
+            </ul>
+        </p>
+
+        Here's a video of me crushing my bot:
+
+        <div class="vert-space"></div>
+
+        <video width="750" height="418" controls>
+            <source src="../assets/chess/demo.mp4" type="video/mp4">
+        </video> 
+        
+        
+        <div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div><div class="vert-space"></div>
+
+        <hr/>
+        <p>...</p>
+        <p>Maybe one day you'll be able to play the bot down here.</p>
+        
+        
+
+    </body>
+</html>
+
+
+
+
+

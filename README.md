@@ -1,5 +1,4 @@
 # LeopardCheetah.github.io
-my website (maybe)
+my website (under construction)
 
-website based off on: https://github.com/ukarim    
-thanks also to mozilla cdn for so many resources
+decided to rewrite my website. 

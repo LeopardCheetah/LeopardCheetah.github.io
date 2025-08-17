@@ -1,4 +1,0 @@
-# hopefully people follow this
-User-agent: AdsBot-Google
-User-agent: *
-Disallow: /

@@ -1,1 +1,1 @@
-See [info\README.md](this readme).
+See [this readme](info/README.md).

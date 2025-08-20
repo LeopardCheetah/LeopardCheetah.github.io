@@ -175,6 +175,7 @@ def main():
     os.chdir(path_to_templates)
     html_files = [] # schema: each item in it is a list of [file name, [<file content>]] (content to be directly written.)
 
+
     for fi in file_infos:
         f_name = fi.pop(0)[:-3] # [-3] to get rid of the ".md"
 
@@ -225,13 +226,17 @@ def main():
         # assume balanced bracket-style enclosures
         _cur_keyword = []
         for _ind, _line in enumerate(html_content_file):
+            print(_line.strip(), _line.strip()[:6], _line.strip()[-5:])
+
+            if len(_line.strip()) == 0:
+                continue 
             
-            if _line.strip()[:6] == '<!-- [' and _line.strip()[:5] == '] -->':
+            if _line.strip()[:6] == '<!-- [' and _line.strip()[-5:] == '] -->':
                 # get keyword and throw it on stack
                 _cur_keyword.append(_line.strip()[6:-5])
                 continue 
 
-            if _line.strip()[:10] == '<!-- [end ' and _line.strip()[:5] == '] -->':
+            if _line.strip()[:10] == '<!-- [end ' and _line.strip()[-5:] == '] -->':
                 if (len(_cur_keyword) == 0) or (_cur_keyword[-1] != _line.strip()[10:-5]):
                     # yikes 
                     raise Exception(f"When processing {f_name}.md to .html, some brackets were not balanced!!\ncore dump: {file_infos}")
@@ -246,6 +251,7 @@ def main():
                 # note: list 'fi' here still has all the info
                 # of the form [int, name, kwargs]
                 word = _line.strip()[1:-1]
+                print('word:', word)
                 
                 _content_ind = 0
                 for _i, _v in enumerate(fi):
@@ -286,8 +292,9 @@ def main():
             # this is just a normal line :)
             continue 
     
-        
         html_files.append([f_name, html_content_file])
+
+
 
     os.chdir(path_templates_to_end_directory)
     for _name, _content in html_files:
@@ -301,6 +308,7 @@ def main():
     
 
     # we are done!
+    print()
     print('All files succesfully (re)generated.')
 
     return 0
@@ -309,6 +317,7 @@ def main():
 
 
 if __name__ == '__main__':
+    print('\n')
     main()  
 
 

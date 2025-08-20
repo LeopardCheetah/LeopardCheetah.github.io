@@ -26,7 +26,7 @@ template_delimiter = "-x-x-x-x-"
 # generate .html files from the .md files in this file path
 folder_to_generate_from = r'..\raw'
 path_to_templates = r'..\generators\templates' # go from folder to generate from to the template folder
-path_to_end_directory = r'..\..' # go from template folder out to where you want the .html files to be
+path_templates_to_end_directory = r'..\..' # go from template folder out to where you want the .html files to be
 
 # ignore .md files with a leading _ char such as _test.md or _a-cool-file.md
 ignore_leading_underscore_files = True 
@@ -110,8 +110,7 @@ def main():
             ctnt.append(l.strip())
             continue 
         
-        file.append([2] + ctnt[1:])
-
+        file.append([2] + ['CONTENT'] + ctnt[1:])
 
 
 
@@ -173,7 +172,138 @@ def main():
     # file_infos should now be a really messy list of all html stuffs
     # now move to the html template, do a find and replace, then write to the final file
 
-    return 
+    os.chdir(path_to_templates)
+    html_files = [] # schema: each item in it is a list of [file name, [<file content>]] (content to be directly written.)
+
+    for fi in file_infos:
+        f_name = fi.pop(0)[:-3] # [-3] to get rid of the ".md"
+
+        template_name = ''
+        # look through and find the template
+        for t in fi:
+            if type(t) != type([0]):
+                # some random thing
+                # theoretically this shouldn't be happening
+                # too lazy to put an exception here
+                continue
+
+            if t[1] == 'TEMPLATE':
+                template_name = t[2]
+                break
+        
+        if template_name == '':
+            raise ValueError(f"When trying to turn file {f_name} from .md to .html, no valid template for {f_name} was found!See below:\nFile dump: {file_infos}")
+        
+
+        template_exists = False 
+        with os.scandir() as it:
+            for entry in it:
+                if not entry.name.startswith('.') and entry.is_file():
+
+                    # take first word
+                    if entry.name.split('.')[0] == template_name:
+                        # exists
+                        template_exists = True
+                        break
+                    
+                    continue 
+
+        if not template_exists:
+            raise ValueError(f"When turning {f_name}.md into a .html file, no valid template could be found!\nApparently, template name {template_name} does not exist. See logs below:\ncore dump: {file_infos}")
+        
+        # so template exists.
+        # now do a find and replace on it -> anything with $$ delimiters will be cast aside
+        
+
+        html_content_file = []
+        with open(f'{template_name}.html', 'r') as f:
+            html_content_file = f.readlines()
+        
+        # now go through base_html_file line by line instead of file object; then modify that to fit content.
+
+        # stack kinda thing
+        # assume balanced bracket-style enclosures
+        _cur_keyword = []
+        for _ind, _line in enumerate(html_content_file):
+            
+            if _line.strip()[:6] == '<!-- [' and _line.strip()[:5] == '] -->':
+                # get keyword and throw it on stack
+                _cur_keyword.append(_line.strip()[6:-5])
+                continue 
+
+            if _line.strip()[:10] == '<!-- [end ' and _line.strip()[:5] == '] -->':
+                if (len(_cur_keyword) == 0) or (_cur_keyword[-1] != _line.strip()[10:-5]):
+                    # yikes 
+                    raise Exception(f"When processing {f_name}.md to .html, some brackets were not balanced!!\ncore dump: {file_infos}")
+                
+                _cur_keyword.pop()
+                continue 
+        
+            if _line.strip()[0] == _line.strip()[-1] == '$' and _line.strip()[1:-1] in _cur_keyword:
+                # find and replace
+                # wlog the dollar sign thing is on its own line so i wont worry about weirdities
+
+                # note: list 'fi' here still has all the info
+                # of the form [int, name, kwargs]
+                word = _line.strip()[1:-1]
+                
+                _content_ind = 0
+                for _i, _v in enumerate(fi):
+                    if _v[1] == word:
+                        _content_ind = _i 
+                        break
+                
+                _content = fi.pop(_content_ind)
+
+                if _content[0] == 0:
+                    # replaces the $delimiter$ with actual content
+                    html_content_file[_ind] = _line.replace(f"${_content[1]}$", _content[2])
+                    continue 
+
+                if _content[0] == 1:
+                    # nav bar.
+                    _mega_string = ''
+                    for _index in range(2, len(_content)):
+                        _mega_string += _content[_index] + '\n'
+                    
+                    _mega_string = _mega_string[:-1] # remove last \n char
+                    html_content_file[_ind] = _line.replace(f"${_content[1]}$", _mega_string)
+                    continue 
+
+                if _content[0] == 2:
+                    # actual content lmao
+                    # do same thing as above as it's basically exactly the same
+                    _mega_string = ''
+                    for _index in range(2, len(_content)):
+                        _mega_string += _content[_index] + '\n'
+                    
+                    _mega_string = _mega_string[:-1] # remove last \n char
+                    html_content_file[_ind] = _line.replace(f"$CONTENT$", _mega_string)
+                    continue 
+
+                raise ValueError(f"You shouldn't be here. Apparently, this find and replace thing that you have cannot be found to be replaced.\nFind and replace index: {_content[0]}\nFind and replace popped content:{_content}\nCore dump: {file_infos}")
+
+            # this is just a normal line :)
+            continue 
+    
+        
+        html_files.append([f_name, html_content_file])
+
+    os.chdir(path_templates_to_end_directory)
+    for _name, _content in html_files:
+        # check if path is vailablae
+        if os.path.isfile(f'{_name}.html'):
+            os.remove(f'{_name}.html')
+
+        with open(f'{_name}.html', 'w') as f:
+            for _item in _content:
+                f.write(_item) # '\n's are already taken care of
+    
+
+    # we are done!
+    print('All files succesfully (re)generated.')
+
+    return 0
 
 
 

@@ -1,0 +1,137 @@
+<!-- a basic html template -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">  
+        <link rel="icon" type="image/png" href="/assets/images/no_face_shark_ico.png">
+
+        <!-- NOTE (to future me): whenever one of these shows up -->
+        <!-- code will just do a find and replace type thing with the brackets and stuff -->
+
+
+        <!-- [PAGETITLE] -->
+        <title>
+            $PAGETITLE$
+        </title>
+        <!-- [end PAGETITLE] -->
+        
+
+        <style> 
+            body {
+                width: 750px;
+                margin: 0 auto;
+                padding: 0 20px 20px 20px;
+                font-family: Helvetica, sans-serif;
+                font-size: 18px;
+                color: #222233;
+                line-height: 1.4; 
+                background-color: #f4ffff; /* super light blue */
+            }
+
+            header {
+                padding: 25px 0 0 0;
+            }
+
+            nav {
+                width: 750px; 
+                margin: 0 auto;
+                padding: 0;
+            }
+
+            nav-right {
+                float: right;
+            }
+
+            img {
+                display: block;
+                margin: 0 auto;
+                max-width: 100%;
+            }
+
+            /* hyper links */
+            a {
+                color:#03f;
+                text-decoration:none
+            }
+
+            hr {
+                display: block;
+                border: 0;
+                height: 10px;
+                border-top: 2px solid #000000;
+            }
+
+            p {
+                margin-bottom: 1em; /* increase white space after a paragraph */
+            }
+
+            ul {
+                list-style-type: "\25B6"; /* black triangle ▶ */
+            }
+
+            li {
+                /* top right bottom left */
+                /* add space between bullet and text */
+                padding: 0 0 0 5px;
+            }
+            
+
+        </style>
+    </head>
+
+    
+    <body>
+        <!-- 
+        <header>
+            <nav>
+                <a href="index.html">Home</a>
+                |
+                <a href="projects.html">Projects</a>
+
+                <nav-right>
+                    <a href="https://github.com/LeopardCheetah">Github</a>
+                    |
+                    <a href="assets/resume.pdf">Resume</a>
+                    |
+                    <a href="https://thelonewolf.bearblog.dev">Blog</a>
+                </nav-right>
+            </nav>
+        </header>
+        --> 
+
+        <header>
+            <!-- [NAV] -->
+            <nav>
+                $NAV$
+                <!-- [NAV-right] -->
+                <nav-right>
+                    $NAV-right$
+                </nav-right>
+                <!-- [end NAV-right] -->
+            </nav>
+            <!-- [end NAV] -->
+        </header>
+
+
+
+        <main> <!-- apparently this is strictly informative but i'll leave it in -->
+
+            <!-- [TITLE] -->
+            <h1>
+                $TITLE$
+            </h1>
+            <!-- [end TITLE] -->
+
+            <!-- [CONTENT] -->
+            <p>$CONTENT$</p>
+            <!-- [end CONTENT] -->
+
+        </main>
+    </body>
+</html>
+
+
+
+
+

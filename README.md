@@ -1,1 +1,1 @@
-See [this readme](info/README.md).
+See [this readme](informatics/README.md).

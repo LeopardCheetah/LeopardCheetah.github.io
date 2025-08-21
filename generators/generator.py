@@ -58,8 +58,10 @@ def main():
         for entry in iterator:
             if not entry.name.startswith('.') and entry.is_file():
                 if ignore_leading_underscore_files and entry.name.startswith('_'):
-                    # you're cooked lmao
                     continue 
+
+                if len(entry.name) < 3 or entry.name[-3:] != '.md':
+                    continue # not a valid .md file
 
                 with open(entry.name, 'r') as f:
 
@@ -70,7 +72,10 @@ def main():
                 continue 
     
     # parse files_lines for juicy information
-    # for now this is MANUAL but yeah this is todo otherwise
+    # i'm p sure this is automated as all information given should be above the barbed wire.
+    # and everything below that is content
+    # so it works out.
+
 
     file_infos = []
     for p in files_lines:
@@ -103,10 +108,14 @@ def main():
                 ])
                 continue 
             
-            # TODO: there WILL need to be some markdown to html processing here
+            # there WILL need to be some markdown to html processing here
             # e.g. <h1s> <hr>, etc. 
             # for now just assume we can throw it in raw and call it a day
             # TODO: (restated) -- make everything below here HTML compatible
+
+            # e.g. -- turn ## into headers, --- into horizontal bars, - into bullet points (of lists), etc.
+            # follow the markdown specs 
+
             ctnt.append(l.strip())
             continue 
         
@@ -226,8 +235,6 @@ def main():
         # assume balanced bracket-style enclosures
         _cur_keyword = []
         for _ind, _line in enumerate(html_content_file):
-            print(_line.strip(), _line.strip()[:6], _line.strip()[-5:])
-
             if len(_line.strip()) == 0:
                 continue 
             
@@ -251,7 +258,6 @@ def main():
                 # note: list 'fi' here still has all the info
                 # of the form [int, name, kwargs]
                 word = _line.strip()[1:-1]
-                print('word:', word)
                 
                 _content_ind = 0
                 for _i, _v in enumerate(fi):
@@ -308,7 +314,6 @@ def main():
     
 
     # we are done!
-    print()
     print('All files succesfully (re)generated.')
 
     return 0

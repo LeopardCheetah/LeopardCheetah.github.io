@@ -30,6 +30,7 @@ path_templates_to_end_directory = r'..\..' # go from template folder out to wher
 
 # ignore .md files with a leading _ char such as _test.md or _a-cool-file.md
 ignore_leading_underscore_files = True 
+whitespace_chars = [' ', '', '\t', '\n']
 
 #############################################################
 
@@ -41,7 +42,161 @@ ignore_leading_underscore_files = True
 
 import os
 import os.path
-import sys
+
+
+
+# in: string 
+# out: (char, index)
+def get_first_non_whitespace_char(s):
+    global whitespace_chars
+
+    _i = 0
+    c = ''
+    for _c in s:
+        if _c not in whitespace_chars:
+            c = _c
+            break
+    
+        _i += 1
+
+    if _i == len(s) - 1:
+        return '', -1
+
+    return c, _i
+def fchar(s): # make this easier to type
+    return get_first_non_whitespace_char(s)
+    
+    
+# in: string -- not a header, not part of a list, etc etc -- just the raw string to be parsed (e.g. add bold, italics, underlines.)
+# out: bool, string, in html form of this string
+def parse_str(s):
+    # TODO - implement.
+    # also do link rendering in here
+    return False, ''
+
+# in: string
+# out: (bool, string) -> string out only if string in was a valid html header and stuff; otherwise bool is false
+def is_header(s):
+    # headers!
+    global whitespace_chars
+
+    if fchar(s) != '#':
+        return False, ''
+    
+    _f = False 
+    _count = 0
+
+    for _c in s:
+        if _c in whitespace_chars and not _f:
+            continue 
+
+        if _c == '#':
+            _count += 1
+            _f = True
+            continue 
+
+        if _c == ' ' or _c == '\t':
+            _f = True 
+            break
+
+        _f = False 
+        break
+
+    if not _f:
+        return False, ''
+
+    if _count > 6:
+        # too many #s lol
+        return False, ''
+    
+    # turn title into html
+    # NOTE: i am not parsing for unnecessary whitespace here
+    # so like "#  x" might become "<h1> x</h1>"" instead of "<h1>x</h1>"
+    _parsed = parse_str(s[s.index(' ', s.index('#')) + 1:])
+
+    return True, f'<h{_count}>{_parsed}</h{_count}>'
+
+
+
+
+# in: list of strings representing the content in a md file (line by line)
+# out: list of strings representing the content of an html file (line by line)
+# do NOT worry about adding \n characters to the end
+
+# note: this will NOT 100% accurately convert every single md file into html. don't count on that.
+def md_to_html(md):
+    _div_stack = [] # stack of open divs 
+
+    # state = 0 ==> normal text
+    # state = 1 -> in an ordered list
+    # state = 2 -> ul
+    # state = 3 -> in blockquotes
+    _state = 0 
+
+    # line(S) of whitespace?
+    _w = 0
+
+    html = []
+
+    for _line in md:
+
+        # line of whitespace
+        if not len(_line) or _line.isspace():
+            # add 'linebreak' ONLY if enough lines have been moved
+            if _w == 3:
+                html.append('<p> </p>')
+                _w += 1
+                continue 
+
+            if _w:
+                html.append('')
+                _w += 1
+                continue 
+
+            _w += 1
+            # usually just close empty par tag or a list
+            # TODO - make sure this thing is closing the right thing; currently this is arbitrary.
+            # TODO - also make sure this is compliant with specs and stuff
+            # html.append('<p> </p>')
+            html.append('???????????')
+            continue 
+        
+        if _state:
+            # idk, do later
+            # TODO - parse this when state = 1 or state = 2 (e.g. when in list)
+            continue 
+
+
+        # check if its header
+        _b, _s = is_header(_line)
+        if _b:
+            _w = 0
+            html.append(_s)
+            continue 
+        
+        # TODO
+        # check if its one of those weird things that turn the text above into a header 
+
+
+        # check if we are blockquoting
+
+
+        # check if we are starting a list
+
+
+        # check if this is a horizontal rule
+
+
+        
+
+        # parse text normally (also beware linebreaks and stuff)
+        pass 
+
+    
+
+
+    return html
+
 
 def main():
     # check to make sure .md folder is valid 
@@ -90,6 +245,7 @@ def main():
 
         ctnt = []
         lines = p[1]
+        md_lines = []
 
         _content = False 
         for l in lines:
@@ -108,19 +264,15 @@ def main():
                 ])
                 continue 
             
-            # there WILL need to be some markdown to html processing here
-            # e.g. <h1s> <hr>, etc. 
-            # for now just assume we can throw it in raw and call it a day
-            # TODO: (restated) -- make everything below here HTML compatible
 
-            # e.g. -- turn ## into headers, --- into horizontal bars, - into bullet points (of lists), etc.
-            # follow the markdown specs 
-
-            ctnt.append(l.strip())
+            md_lines.append(l)
             continue 
-        
-        file.append([2] + ['CONTENT'] + ctnt[1:])
 
+        md_lines = md_lines[1:] # remove empty line after delimiter
+        # turn into markdown
+        generated_html_lines = md_to_html(md_lines)
+        
+        file.append([2] + ['CONTENT'] + generated_html_lines)
 
 
 

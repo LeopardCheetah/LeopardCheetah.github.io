@@ -45,78 +45,6 @@ import os.path
 
 
 
-# in: string 
-# out: (char, index)
-def get_first_non_whitespace_char(s):
-    global whitespace_chars
-
-    _i = 0
-    c = ''
-    for _c in s:
-        if _c not in whitespace_chars:
-            c = _c
-            break
-    
-        _i += 1
-
-    if _i == len(s) - 1:
-        return '', -1
-
-    return c, _i
-def fchar(s): # make this easier to type
-    return get_first_non_whitespace_char(s)
-    
-    
-# in: string -- not a header, not part of a list, etc etc -- just the raw string to be parsed (e.g. add bold, italics, underlines.)
-# out: bool, string, in html form of this string
-def parse_str(s):
-    # TODO - implement.
-    # also do link rendering in here
-    return False, ''
-
-# in: string
-# out: (bool, string) -> string out only if string in was a valid html header and stuff; otherwise bool is false
-def is_header(s):
-    # headers!
-    global whitespace_chars
-
-    if fchar(s) != '#':
-        return False, ''
-    
-    _f = False 
-    _count = 0
-
-    for _c in s:
-        if _c in whitespace_chars and not _f:
-            continue 
-
-        if _c == '#':
-            _count += 1
-            _f = True
-            continue 
-
-        if _c == ' ' or _c == '\t':
-            _f = True 
-            break
-
-        _f = False 
-        break
-
-    if not _f:
-        return False, ''
-
-    if _count > 6:
-        # too many #s lol
-        return False, ''
-    
-    # turn title into html
-    # NOTE: i am not parsing for unnecessary whitespace here
-    # so like "#  x" might become "<h1> x</h1>"" instead of "<h1>x</h1>"
-    _parsed = parse_str(s[s.index(' ', s.index('#')) + 1:])
-
-    return True, f'<h{_count}>{_parsed}</h{_count}>'
-
-
 
 
 # in: list of strings representing the content in a md file (line by line)
@@ -125,7 +53,19 @@ def is_header(s):
 
 # note: this will NOT 100% accurately convert every single md file into html. don't count on that.
 def md_to_html(md):
+    # remove ending '\n' from each line in md
+    
+    _md = []
+    for _l in md:
+        _md.append(_l[:-1])
+    
+    # last line doesn't have a newl char
+    if md[-1][-1] != '\n':
+        md[-1] += md[-1][-1]
+
+
     _div_stack = [] # stack of open divs 
+
 
     # state = 0 ==> normal text
     # state = 1 -> in an ordered list
@@ -133,69 +73,116 @@ def md_to_html(md):
     # state = 3 -> in blockquotes
     _state = 0 
 
-    # line(S) of whitespace?
-    _w = 0
-
-    html = []
-
-    for _line in md:
-
-        # line of whitespace
-        if not len(_line) or _line.isspace():
-            # add 'linebreak' ONLY if enough lines have been moved
-            if _w == 3:
-                html.append('<p> </p>')
-                _w += 1
-                continue 
-
-            if _w:
-                html.append('')
-                _w += 1
-                continue 
-
-            _w += 1
-            # usually just close empty par tag or a list
-            # TODO - make sure this thing is closing the right thing; currently this is arbitrary.
-            # TODO - also make sure this is compliant with specs and stuff
-            # html.append('<p> </p>')
-            html.append('???????????')
-            continue 
-        
-        if _state:
-            # idk, do later
-            # TODO - parse this when state = 1 or state = 2 (e.g. when in list)
-            continue 
-
-
-        # check if its header
-        _b, _s = is_header(_line)
-        if _b:
-            _w = 0
-            html.append(_s)
-            continue 
-        
-        # TODO
-        # check if its one of those weird things that turn the text above into a header 
-
-
-        # check if we are blockquoting
-
-
-        # check if we are starting a list
-
-
-        # check if this is a horizontal rule
-
-
-        
-
-        # parse text normally (also beware linebreaks and stuff)
-        pass 
-
     
+    html = ['']
+    global whitespace_chars
+
+    for line_ind, line in enumerate(_md):
+        hline = line # line after being html'd
+
+        if len(line) == 0:
+            # ???
+            # must be a newl char
+            if len(_div_stack) and _div_stack[-1] == 'p':
+                html.append('</p>')
+            continue
+        
+
+        # check header
+        flag = 0 
+        for i in range(1, 7):
+            if hline[:i] == i*'#' and hline[i] == ' ':
+                flag = i # got the header
+                break
+        
+        if flag:
+            html.append(f'<h{flag}>{hline[flag+1:]}</h{flag}>')
+            continue 
 
 
-    return html
+        # check if it's those stupid ---- headers or something
+        flag = 1 if hline[0] == '=' else 2
+        for c in hline:
+            if flag == 1 and (c != '=' and c not in whitespace_chars):
+                flag = 0 
+                break
+            
+            if c != '-' and c not in whitespace_chars:
+                flag = 0
+                break
+
+        # replace line above with a header
+        if flag and line_ind:
+            if len(html) > 5:
+                if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>':
+                    # already a header, pass
+                    # might actually be a hr
+                    
+                    if flag == 2:
+                        html.append('<hr />')
+                        continue 
+
+                    html.append('') # spacers are good
+                    continue 
+            
+            # turn the text above into a header.
+            html[-1] = f'<h{flag}>{html[-1]}</h{flag}>'
+            html.append('')
+            continue 
+
+
+
+
+        # assume all emblishments (italics, line breaks, bullets) are added
+        # and you just want a plain old paragraph
+        # :D
+        if len(_div_stack) == 0:
+            # push 
+            _div_stack.append('p')
+            html.append(f'<p>{hline}')
+            continue 
+
+        if _div_stack[-1] == 'p':
+            # nice, just add in the text that you have
+
+            # with a line break (maybe, go search for it)
+            if len(_md[line_ind - 1]) < 3:
+                if _md[line_ind - 1][-2:] == '  ' or _md[line_ind - 1][-2:] == r'\\' or md[line_ind - 1][-1][-3:] == r'\\ ': # add in a line break
+                    html.append('<br>')
+
+            html.append(f'{hline}')
+            continue 
+
+        # awkward
+        # last div was NOT a p
+        # gotta close that i guess
+
+        # clear out whatever abomination is happening
+        print('Warning!! -- something weird is happening')
+        print(f'trying to make p object on line {line_ind} with the line text being {line} but there\'s some stuff in the way')
+        print()
+
+        for i in len(_div_stack):
+            # do back to front
+            html.append(f'</{_div_stack[-(i + 1)]}> ')
+        
+        html.append('')
+        # add our own paragraph
+        _div_stack.append('p')
+        html.append(f'<p>{hline}')
+
+        continue 
+
+
+
+
+
+        
+
+
+
+
+    return html + ['']
 
 
 def main():

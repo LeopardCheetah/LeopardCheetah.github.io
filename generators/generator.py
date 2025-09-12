@@ -61,7 +61,7 @@ def md_to_html(md):
     
     # last line doesn't have a newl char
     if md[-1][-1] != '\n':
-        md[-1] += md[-1][-1]
+        _md[-1] += md[-1][-1]
 
 
     _div_stack = [] # stack of open divs 
@@ -80,26 +80,16 @@ def md_to_html(md):
     for line_ind, line in enumerate(_md):
         hline = line # line after being html'd
 
+        # ???
         if len(line) == 0:
             # ???
             # must be a newl char
             if len(_div_stack) and _div_stack[-1] == 'p':
+                _div_stack.pop()
                 html.append('</p>')
             continue
+
         
-
-        # check header
-        flag = 0 
-        for i in range(1, 7):
-            if hline[:i] == i*'#' and hline[i] == ' ':
-                flag = i # got the header
-                break
-        
-        if flag:
-            html.append(f'<h{flag}>{hline[flag+1:]}</h{flag}>')
-            continue 
-
-
         # check if it's those stupid ---- headers or something
         flag = 1 if hline[0] == '=' else 2
         for c in hline:
@@ -114,7 +104,7 @@ def md_to_html(md):
         # replace line above with a header
         if flag and line_ind:
             if len(html) > 5:
-                if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>':
+                if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>' or html[-1].strip() == '</p>':
                     # already a header, pass
                     # might actually be a hr
                     
@@ -125,10 +115,157 @@ def md_to_html(md):
                     html.append('') # spacers are good
                     continue 
             
+            # remove the <p> tag if that's lurking in here
+            if html[-1][:3] == '<p>':
+                html[-1] = html[-1][3:]
+                if _div_stack.pop() != 'p': # ASSUMING this is a p tag
+                    # fail hard
+                    print('Critical WARNING!!!!')
+                    print(f'On md file with contents {md}, could not render line {line_ind} because of some weird open divs!!')
+                    print(f'Please inspect the html for said file before use.')
+                    print()
+
+
             # turn the text above into a header.
             html[-1] = f'<h{flag}>{html[-1]}</h{flag}>'
             html.append('')
             continue 
+
+
+        # basic text processing
+        # turn `` into code, ** into bold/it/both, etc.
+        # do NOT deal with ``` codeblocks
+        # also turn double/triple dashes into em dashes
+        
+        # &#8211; | &ndash; || &#8212; | &mdash;
+        # em/en dash replacement
+        hline = hline.replace('---', '&mdash;')
+        hline = hline.replace('--', '&ndash;')
+
+
+        # asterisk replacement (manual)
+        _hline = ''
+        _str_ind = -1
+        _strong_em = 0 # 0 for none, 1 for strong open, 2 for em open, 3 for both open
+        _code = 0 # 0 for closed, 1 for open
+        _s = 0 # chars to skip
+        for v in hline:
+            _str_ind += 1
+            if _s > 0:
+                _s -= 1
+                continue 
+
+            if v == '*':
+                if _str_ind > 0 and hline[_str_ind - 1] == '\\':
+                    _hline += '*'
+                    continue 
+
+                # actual thing happening
+                # figure out what we got
+                if len(hline) > _str_ind + 2 and hline[_str_ind + 1] == hline[_str_ind + 2] == '*':
+                    # 3!
+                    _s = 2 # skip the two asterisks
+                    if _strong_em == 0:
+                        # open both
+                        _strong_em = 3
+                        _hline += '<em><strong>'
+                        continue 
+
+                    if _strong_em == 1:
+                        _strong_em = 2
+                        _hline += '</strong><em>'
+                        continue 
+
+                    if _strong_em == 2:
+                        _strong_em = 1
+                        _hline += '</em><strong>'
+                        continue 
+
+                    if _strong_em == 3:
+                        _strong_em = 0
+                        _hline += '</strong></em>'
+                        continue 
+
+                    # ??
+                    continue 
+
+                if len(hline) > _str_ind + 1 and hline[_str_ind + 1] == '*':
+                    _s = 1
+                    if _strong_em % 2: # if 1 or 3, aka strong is open
+                        _strong_em -= 1
+                        _hline += '</strong>'
+                        continue 
+
+                    _strong_em += 1
+                    _hline += '<strong>'
+                    continue 
+
+                # 1 char
+                if _strong_em // 2:
+                    _strong_em -= 2
+                    _hline += '</em>'
+                    continue 
+                
+                _strong_em += 2
+                _hline += '<em>'
+                continue 
+
+            if v == '`':
+                # NOTE: this has limitations.
+                # at this point however, it's whatever
+                if _str_ind > 0 and hline[_str_ind - 1] == '\\':
+                    _hline += '`'
+                    continue 
+
+
+                if len(hline) > _str_ind + 2 and hline[_str_ind + 1] == hline[_str_ind + 2] == '`':
+                    # yikes, this seems to be a code fence.
+                    # let's just leave it be 
+                    _s = 2 
+                    _hline += '```'
+                    continue 
+
+                if _code:
+                    _hline += '</code>'
+                    _code = 0
+                    continue 
+
+                _code = 1
+                _hline += '<code>'
+                continue 
+
+            # NOTE: maybe excape some characters here.
+
+            _hline += v
+            continue 
+
+        hline = _hline 
+        
+
+
+        
+
+        # check header
+        flag = 0 
+        for i in range(1, 7):
+            if hline[:i] == i*'#' and hline[i] == ' ':
+                flag = i # got the header
+                break
+        
+        if flag:
+            # lowkey there might be an open <p>
+            # let's close that 
+            if len(_div_stack) and _div_stack[-1] == 'p':
+                _div_stack.pop()
+                html.append('</p> ')
+
+            html.append(f'<h{flag}>{hline[flag+1:]}</h{flag}>')
+            continue 
+
+
+        
+
+
 
 
 
@@ -177,9 +314,9 @@ def md_to_html(md):
 
 
 
-        
-
-
+    # cleanup + close any remaining divs.
+    while len(_div_stack) > 0:
+        html.append(f'</{_div_stack.pop()}> ')
 
 
     return html + ['']

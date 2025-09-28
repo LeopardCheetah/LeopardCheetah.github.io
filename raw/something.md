@@ -4,28 +4,6 @@ PAGETITLE: something
 
 # some file
 
-this is some other file
+this is some other file that is being used as just a test file.
 
 
-test 
-----
-
-
-some more testing -- even more!
-
-yeah!
-
-
----
-
-anyways
-
-some *test* **text** !! ***abcd efgh*** ik*m***n**.
-
-`test`
-
-```test```
-
-```test2```
-
-***test3***

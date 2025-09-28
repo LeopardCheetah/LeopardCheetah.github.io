@@ -222,7 +222,16 @@ def md_to_html(md):
                     # yikes, this seems to be a code fence.
                     # let's just leave it be 
                     _s = 2 
-                    _hline += '```'
+
+                    if not len(_div_stack) or (len(_div_stack) and _div_stack[-1] != 'pre'):
+                        _hline += '<pre>'
+                        _div_stack.append('pre')
+                        continue 
+                    
+                    _div_stack.pop()
+                    _hline += '</pre>'
+                    
+
                     continue 
 
                 if _code:
@@ -258,9 +267,13 @@ def md_to_html(md):
             if len(_div_stack) and _div_stack[-1] == 'p':
                 _div_stack.pop()
                 html.append('</p> ')
-
-            html.append(f'<h{flag}>{hline[flag+1:]}</h{flag}>')
-            continue 
+            
+            if len(_div_stack) and _div_stack[-1] == 'pre':
+                # ignore
+                pass 
+            else:
+                html.append(f'<h{flag}>{hline[flag+1:]}</h{flag}>')
+                continue 
 
 
         
@@ -274,6 +287,11 @@ def md_to_html(md):
         # and you just want a plain old paragraph
         # :D
         if len(_div_stack) == 0:
+            if '</pre>' in hline:
+                # yikes; push with caution
+                html.append(f'{hline}')
+                continue 
+            
             # push 
             _div_stack.append('p')
             html.append(f'<p>{hline}')
@@ -294,6 +312,14 @@ def md_to_html(md):
         # last div was NOT a p
         # gotta close that i guess
 
+
+        # 2nd chance
+        if _div_stack[-1] == 'pre':
+            # we still in this codeblock together gang
+            html.append(f'{hline}')
+            continue 
+        
+
         # clear out whatever abomination is happening
         print('Warning!! -- something weird is happening')
         print(f'trying to make p object on line {line_ind} with the line text being {line} but there\'s some stuff in the way')
@@ -305,8 +331,7 @@ def md_to_html(md):
         
         html.append('')
         # add our own paragraph
-        _div_stack.append('p')
-        html.append(f'<p>{hline}')
+        html.append(f'<p>{hline}</p>')
 
         continue 
 

@@ -91,19 +91,49 @@ def md_to_html(md):
 
         
         # check if it's those stupid ---- headers or something
-        flag = 1 if hline[0] == '=' else 2
+        # if it is a header from === flag will be 1; if its from ---- flag will be 2
+        # otherwise flag = 0
+        # flag = 3 -> indecisive
+        flag = 3
+        # dont write stupid md files
         for c in hline:
+            if flag == 3 and c in whitespace_chars:
+                continue 
+
+            if flag == 3 and c == '=':
+                flag = 1
+                continue 
+
+            if flag == 3 and c == '-':
+                flag = 2
+                continue 
+
+            if flag == 3:
+                flag = 0 
+                break
+
             if flag == 1 and (c != '=' and c not in whitespace_chars):
                 flag = 0 
                 break
             
-            if c != '-' and c not in whitespace_chars:
+            if flag == 2 and (c != '-' and c not in whitespace_chars):
                 flag = 0
                 break
+
+        if flag == 3:
+            flag = 0
+
+        if flag == 1 and hline.count('===') == 0:
+            flag = 0
+        
+        if flag == 2 and hline.count('---') == 0:
+            flag = 0
+
 
         # replace line above with a header
         if flag and line_ind:
             if len(html) > 5:
+                print(html)
                 if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>' or html[-1].strip() == '</p>':
                     # already a header, pass
                     # might actually be a hr
@@ -132,9 +162,41 @@ def md_to_html(md):
             continue 
 
 
+        # check if we block quoting or not 
+        # sorry about the if-statement nesting
+        if '>' in hline:
+            
+
+            # check if theres a space after (e.g. "> xyz" vs ">xyz")
+            if len(hline) > hline.index('>') + 1 and hline[hline.index('>') + 1] == ' ':
+                flag = 1
+                # check to make sure  everything b4 '>' is whitespace
+                for c in hline:
+                    if c == '>':
+                        break
+
+                    if c not in whitespace_chars:
+                        flag = 0
+                        break
+
+                    continue 
+
+                if flag:
+                    # first remove the "> " from the thing
+                    # then add approproatie flags
+
+                    # count = 1
+                    hline = f'<blockquote>{hline.replace("> ", "", 1)}</blockquote>'
+
+        
+            
+
+
+
+        #########################
         # basic text processing
+        ##########################
         # turn `` into code, ** into bold/it/both, etc.
-        # do NOT deal with ``` codeblocks
         # also turn double/triple dashes into em dashes
         
         # &#8211; | &ndash; || &#8212; | &mdash;
@@ -149,14 +211,16 @@ def md_to_html(md):
         _strong_em = 0 # 0 for none, 1 for strong open, 2 for em open, 3 for both open
         _code = 0 # 0 for closed, 1 for open
         _s = 0 # chars to skip
+
         for v in hline:
             _str_ind += 1
+
             if _s > 0:
                 _s -= 1
                 continue 
 
             if v == '*':
-                if _str_ind > 0 and hline[_str_ind - 1] == '\\':
+                if _str_ind and hline[_str_ind - 1] == '\\':
                     _hline += '*'
                     continue 
 
@@ -245,6 +309,8 @@ def md_to_html(md):
 
             # NOTE: maybe excape some characters here.
 
+            
+
             _hline += v
             continue 
 
@@ -297,7 +363,8 @@ def md_to_html(md):
             html.append(f'<p>{hline}')
             continue 
 
-        if _div_stack[-1] == 'p':
+        if _div_stack[-1] == 'p' and len(_div_stack) == 1:
+            _div_stack.pop()
             # nice, just add in the text that you have
 
             # with a line break (maybe, go search for it)
@@ -305,7 +372,7 @@ def md_to_html(md):
                 if _md[line_ind - 1][-2:] == '  ' or _md[line_ind - 1][-2:] == r'\\' or md[line_ind - 1][-1][-3:] == r'\\ ': # add in a line break
                     html.append('<br>')
 
-            html.append(f'{hline}')
+            html.append(f'{hline}</p>')
             continue 
 
         # awkward
@@ -314,7 +381,8 @@ def md_to_html(md):
 
 
         # 2nd chance
-        if _div_stack[-1] == 'pre':
+        if _div_stack[-1] == 'pre' and len(_div_stack) == 0:
+            _div_stack.pop()
             # we still in this codeblock together gang
             html.append(f'{hline}')
             continue 
@@ -328,14 +396,13 @@ def md_to_html(md):
         for i in len(_div_stack):
             # do back to front
             html.append(f'</{_div_stack[-(i + 1)]}> ')
+            _div_stack = []
         
         html.append('')
         # add our own paragraph
         html.append(f'<p>{hline}</p>')
 
         continue 
-
-
 
 
 
@@ -623,7 +690,7 @@ def main():
 
 
 if __name__ == '__main__':
-    print('\n')
+    print('\n------------------------------------')
     main()  
 
 

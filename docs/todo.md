@@ -19,9 +19,18 @@ in progress/considering/whatever:
 
 
 generator specific:
-- [ ] <finish all the rest of the md stuff that needs to be done> -- block quotes (nested!), lists (ol, ul), images, horizontal rules, links | (see escape chars too)
+- [ ] do lists (ol, ul)
+- [ ] do images
+- [ ] do links (href) 
 - [ ] add footnote support
-- [ ] do things from here: https://www.markdownguide.org/extended-syntax/ -- strikethrough looks good
+- [ ] do a strikethrough (~~)
+
+
+
+
+
+
+
 
 
 
@@ -29,9 +38,11 @@ generator specific:
 way later:   
 - [ ] add a stupid license
 - [ ] implement subpages (currently this is IMPOSSIBLE lmao)   
+- [ ] figure out what the escape character is happening
 
  
 not doing:   
 - [ ] make `generator.py` conform to the markdown spec. is just too time consuming + annoying for me to cover the edge cases, and I'll assume that most md is written nicely -- aka written the way i write it. (spec: https://spec.commonmark.org/0.31.2/)    
 - [ ] turn this into a legit open src thing with good readmes + docs (or maybe rewrite this)
+- [ ] make block quotes be able to nest / be able to accomodate more than a quote in the block quote thing (bro just edit the html yourself)
 

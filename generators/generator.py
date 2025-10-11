@@ -35,9 +35,6 @@ whitespace_chars = [' ', '', '\t', '\n']
 #############################################################
 
 
-# known conversions to do:
-# --- -> <hr /> (horizontal rule)
-
 # ok let's parse!
 
 import os
@@ -89,6 +86,26 @@ def md_to_html(md):
                 html.append('</p>')
             continue
 
+        if len(line.strip()) == 0:
+            # ?????
+            if len(_div_stack) and _div_stack[-1] == 'p':
+                _div_stack.pop()
+                html.append('</p>')
+            continue
+
+        # check if its an hr
+        # aka (***)/(___) (not --- here)
+        if line.strip() == '*'*len(line.strip()) or line.strip() == '_'*len(line.strip()):
+            # add hr and call it a day
+            # unpop all divs rq
+            s = ''
+            while len(_div_stack):
+                s += f'</{_div_stack.pop()}>'
+
+            html.append(s)
+            html.append('<hr />')
+            continue 
+
         
         # check if it's those stupid ---- headers or something
         # if it is a header from === flag will be 1; if its from ---- flag will be 2
@@ -120,20 +137,14 @@ def md_to_html(md):
                 flag = 0
                 break
 
-        if flag == 3:
+        if flag == 3 or (flag == 1 and not hline.count('===')) or (flag == 2 and not hline.count('---')):
             flag = 0
-
-        if flag == 1 and hline.count('===') == 0:
-            flag = 0
-        
-        if flag == 2 and hline.count('---') == 0:
             flag = 0
 
 
         # replace line above with a header
         if flag and line_ind:
             if len(html) > 5:
-                print(html)
                 if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>' or html[-1].strip() == '</p>':
                     # already a header, pass
                     # might actually be a hr
@@ -323,7 +334,7 @@ def md_to_html(md):
         # check header
         flag = 0 
         for i in range(1, 7):
-            if hline[:i] == i*'#' and hline[i] == ' ':
+            if hline.strip()[:i] == i*'#' and hline.strip()[i] == ' ':
                 flag = i # got the header
                 break
         

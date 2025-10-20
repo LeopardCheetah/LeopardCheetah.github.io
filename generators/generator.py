@@ -62,14 +62,6 @@ def md_to_html(md):
 
 
     _div_stack = [] # stack of open divs 
-
-
-    # state = 0 ==> normal text
-    # state = 1 -> in an ordered list
-    # state = 2 -> ul
-    # state = 3 -> in blockquotes
-    _state = 0 
-
     
     html = ['']
     global whitespace_chars
@@ -222,9 +214,12 @@ def md_to_html(md):
         _strong_em = 0 # 0 for none, 1 for strong open, 2 for em open, 3 for both open
         _code = 0 # 0 for closed, 1 for open
         _s = 0 # chars to skip
+        
+        _tilde = False
 
         for v in hline:
             _str_ind += 1
+            
 
             if _s > 0:
                 _s -= 1
@@ -318,18 +313,33 @@ def md_to_html(md):
                 _hline += '<code>'
                 continue 
 
-            # NOTE: maybe excape some characters here.
 
-            
+            # NOTE: maybe excape some characters here.
 
             _hline += v
             continue 
 
+
+        _b = False
+        while '~~' in _hline:
+            _b = not _b 
+
+            if _b:
+                # add <s>
+                _hline = _hline.replace('~~', '<s>', 1)
+                continue 
+
+            _hline = _hline.replace('~~', '</s>', 1)
+            continue                 
+        
+        if _b:
+            # yikes, let's close the strikethoguh
+            _hline += '</s>'
+
         hline = _hline 
-        
 
+        ########### end basic text processing ###############
 
-        
 
         # check header
         flag = 0 
@@ -351,7 +361,7 @@ def md_to_html(md):
             else:
                 html.append(f'<h{flag}>{hline[flag+1:]}</h{flag}>')
                 continue 
-
+            
 
         
 
@@ -392,8 +402,8 @@ def md_to_html(md):
 
 
         # 2nd chance
-        if _div_stack[-1] == 'pre' and len(_div_stack) == 0:
-            _div_stack.pop()
+        if _div_stack[-1] == 'pre' and len(_div_stack) == 1:
+            # _div_stack.pop()
             # we still in this codeblock together gang
             html.append(f'{hline}')
             continue 
@@ -404,7 +414,9 @@ def md_to_html(md):
         print(f'trying to make p object on line {line_ind} with the line text being {line} but there\'s some stuff in the way')
         print()
 
-        for i in len(_div_stack):
+        print(_div_stack)
+        for i in range(len(_div_stack)):
+            
             # do back to front
             html.append(f'</{_div_stack[-(i + 1)]}> ')
             _div_stack = []

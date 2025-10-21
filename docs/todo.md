@@ -16,7 +16,8 @@ in progress/considering/whatever:
 - [ ] fix my broken shark favicon (does it need to be of type ico?) 
 
 
-
+md syntax: https://www.markdownguide.org/basic-syntax/
+testing html page: file:///C:/Users/flow/Desktop/code/gitstuff/LeopardCheetah.github.io/something.html
 generator specific:
 - [ ] do unordered lists
 - [ ] do images -- tihs will probably be done in text processing section

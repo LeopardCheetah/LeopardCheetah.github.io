@@ -70,6 +70,10 @@ def md_to_html(md):
     for line_ind, line in enumerate(_md):
         hline = line # line after being html'd
 
+        if '```' not in line and _in_code_block:
+            html.append(line)
+            continue 
+
         # ???
         if len(line) == 0:
             # ???
@@ -77,6 +81,7 @@ def md_to_html(md):
             if len(_div_stack) and _div_stack[-1] == 'p':
                 _div_stack.pop()
                 html.append('</p>')
+                continue 
             continue
 
         if len(line.strip()) == 0:
@@ -84,6 +89,7 @@ def md_to_html(md):
             if len(_div_stack) and _div_stack[-1] == 'p':
                 _div_stack.pop()
                 html.append('</p>')
+            
             continue
 
         # check if its an hr
@@ -132,11 +138,10 @@ def md_to_html(md):
 
         if flag == 3 or (flag == 1 and not hline.count('===')) or (flag == 2 and not hline.count('---')):
             flag = 0
-            flag = 0
 
 
         # replace line above with a header
-        if flag and line_ind:
+        if flag and line_ind and not _in_code_block:
             if len(html) > 5:
                 if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>' or html[-1].strip() == '</p>':
                     # already a header, pass
@@ -185,7 +190,7 @@ def md_to_html(md):
 
                     continue 
 
-                if flag:
+                if flag and not _in_code_block:
                     # first remove the "> " from the thing
                     # then add approproatie flags
 
@@ -253,6 +258,7 @@ def md_to_html(md):
                 _code = 1
                 _hline += '<code>'
                 continue 
+
                     
             if _in_code_block:
                 _hline += v
@@ -337,10 +343,11 @@ def md_to_html(md):
                 _hline += '</s>'
 
 
-        # &#8211; | &ndash; || &#8212; | &mdash;
-        # em/en dash replacement
-        _hline = _hline.replace('---', '&mdash;')
-        _hline = _hline.replace('--', '&ndash;')
+            # &#8211; | &ndash; || &#8212; | &mdash;
+            # em/en dash replacement
+            _hline = _hline.replace('---', '&mdash;')
+            _hline = _hline.replace('--', '&ndash;')
+
 
         hline = _hline 
 

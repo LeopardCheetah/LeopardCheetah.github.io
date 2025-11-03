@@ -9,7 +9,7 @@ done:
 - [x] make code (`<code>`/`<pre>`) blocks actually look good (a.k.a. change the css so they don't stick out, add some margins, box outline/indent)      
 - [x] do unordered lists - NOTE: you cannot stack lists with other things or have sub-bullet points      
 - [x] do links (href) -- this will probably be done in text processing section
-
+- [x] add support for images.    
 
 
 in progress/considering/whatever:   
@@ -21,6 +21,7 @@ in progress/considering/whatever:
 ----
 
 way later (aka never):   
+
 - [ ] add a stupid license
 - [ ] implement subpages (currently this is IMPOSSIBLE lmao)   
 - [ ] figure out what the escape character is happening
@@ -34,5 +35,5 @@ not doing:
 - [ ] turn this into a legit open src thing with good readmes + docs (or maybe rewrite this)
 - [ ] make block quotes be able to nest / be able to accomodate more than a quote in the block quote thing (bro just edit the html yourself)
 - [ ] ordered (numbered) lists. I just don't like them (change `<ul>` to `<ol>` if you're annoyed)
-- [ ] do images -- just do this manually ya bum
+
 

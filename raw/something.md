@@ -28,3 +28,5 @@ print(yay)
 
 
 this is a [test link](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Creating_links) to some [mozilla docs](https://www.markdownguide.org/basic-syntax/).
+
+help ![asset test](/assets/test_asset.png)

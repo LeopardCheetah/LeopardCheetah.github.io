@@ -411,7 +411,25 @@ def md_to_html(md):
             # essentially, replace the whole part of hl
             # indices to replace are from sq_br_l to _par_r onwards
             # +1 for the parentheses.
-            hline = hline[:_sq_br_l] + f'<a href="{_link}">{_ref_text}</a>' + hline[_par_r + 1:]  
+
+            # also, check if this is an image!!!
+            _is_image = hline[max(0, _sq_br_l - 1)] == '!'
+
+            if _is_image:
+                # process _link ahead of time
+                # remove leading slash, then fliter for the ..
+                if _link[0] == '/':
+                    _link = _link[1:]
+
+                if _link[:3] == '../': # makes sense going from raw folder
+                    _link = _link[3:]
+                
+                
+                # extra -1 to remove the "!"
+                hline = hline[:_sq_br_l - 1] + f'<img src="{_link}" alt="{_ref_text}" />' + hline[_par_r + 1:]  
+
+            else: # replace using link.
+                hline = hline[:_sq_br_l] + f'<a href="{_link}">{_ref_text}</a>' + hline[_par_r + 1:]  
             continue 
 
 

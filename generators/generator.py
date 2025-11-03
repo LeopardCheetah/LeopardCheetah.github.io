@@ -65,6 +65,7 @@ def md_to_html(md):
     
     html = ['']
     global whitespace_chars
+    _in_code_block = False
 
     for line_ind, line in enumerate(_md):
         hline = line # line after being html'd
@@ -201,11 +202,6 @@ def md_to_html(md):
         ##########################
         # turn `` into code, ** into bold/it/both, etc.
         # also turn double/triple dashes into em dashes
-        
-        # &#8211; | &ndash; || &#8212; | &mdash;
-        # em/en dash replacement
-        hline = hline.replace('---', '&mdash;')
-        hline = hline.replace('--', '&ndash;')
 
 
         # asterisk replacement (manual)
@@ -214,16 +210,54 @@ def md_to_html(md):
         _strong_em = 0 # 0 for none, 1 for strong open, 2 for em open, 3 for both open
         _code = 0 # 0 for closed, 1 for open
         _s = 0 # chars to skip
+
         
-        _tilde = False
 
         for v in hline:
             _str_ind += 1
-            
-
             if _s > 0:
                 _s -= 1
                 continue 
+
+            if v == '`':
+                # NOTE: this has limitations.
+                # at this point however, it's whatever
+                if _str_ind > 0 and hline[_str_ind - 1] == '\\':
+                    _hline += '`'
+                    continue 
+
+
+                if len(hline) > _str_ind + 2 and hline[_str_ind + 1] == hline[_str_ind + 2] == '`':
+                    # yikes, this seems to be a code fence.
+                    # let's just leave it be 
+                    _s = 2 
+
+                    if not len(_div_stack) or (len(_div_stack) and _div_stack[-1] != 'pre'):
+                        _hline += '<pre><code>'
+                        _div_stack.append('pre')
+                        _in_code_block = True 
+                        continue 
+                    
+                    _div_stack.pop()
+                    _hline += '</code></pre>'
+                    _in_code_block = False
+                    
+
+                    continue 
+
+                if _code:
+                    _hline += '</code>'
+                    _code = 0
+                    continue 
+
+                _code = 1
+                _hline += '<code>'
+                continue 
+                    
+            if _in_code_block:
+                _hline += v
+                continue 
+            
 
             if v == '*':
                 if _str_ind and hline[_str_ind - 1] == '\\':
@@ -280,61 +314,33 @@ def md_to_html(md):
                 _hline += '<em>'
                 continue 
 
-            if v == '`':
-                # NOTE: this has limitations.
-                # at this point however, it's whatever
-                if _str_ind > 0 and hline[_str_ind - 1] == '\\':
-                    _hline += '`'
-                    continue 
-
-
-                if len(hline) > _str_ind + 2 and hline[_str_ind + 1] == hline[_str_ind + 2] == '`':
-                    # yikes, this seems to be a code fence.
-                    # let's just leave it be 
-                    _s = 2 
-
-                    if not len(_div_stack) or (len(_div_stack) and _div_stack[-1] != 'pre'):
-                        _hline += '<pre>'
-                        _div_stack.append('pre')
-                        continue 
-                    
-                    _div_stack.pop()
-                    _hline += '</pre>'
-                    
-
-                    continue 
-
-                if _code:
-                    _hline += '</code>'
-                    _code = 0
-                    continue 
-
-                _code = 1
-                _hline += '<code>'
-                continue 
-
-
             # NOTE: maybe excape some characters here.
 
             _hline += v
             continue 
-
-
-        _b = False
-        while '~~' in _hline:
-            _b = not _b 
-
-            if _b:
-                # add <s>
-                _hline = _hline.replace('~~', '<s>', 1)
-                continue 
-
-            _hline = _hline.replace('~~', '</s>', 1)
-            continue                 
         
-        if _b:
-            # yikes, let's close the strikethoguh
-            _hline += '</s>'
+        if not _in_code_block:
+            _b = False
+            while '~~' in _hline:
+                _b = not _b 
+
+                if _b:
+                    # add <s>
+                    _hline = _hline.replace('~~', '<s>', 1)
+                    continue 
+
+                _hline = _hline.replace('~~', '</s>', 1)
+                continue                 
+            
+            if _b:
+                # yikes, let's close the strikethoguh
+                _hline += '</s>'
+
+
+        # &#8211; | &ndash; || &#8212; | &mdash;
+        # em/en dash replacement
+        _hline = _hline.replace('---', '&mdash;')
+        _hline = _hline.replace('--', '&ndash;')
 
         hline = _hline 
 

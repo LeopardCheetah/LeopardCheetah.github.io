@@ -79,8 +79,23 @@
             
             /* code blocks */
             pre {
-                background-color: #fbefb1;
+                background-color: #eee;
                 white-space: pre-wrap;
+            }
+
+            /* taken from http://web.simmons.edu/~grabiner/comm244/weekfour/code-test.html */
+            pre code {
+                background-color: #eee;
+                border: 1px solid #999;
+                display: block;
+                padding: 20px;
+            }
+
+            code {
+                background-color: #eee;
+                border: 0px solid #999;
+                display: inline-block;
+                padding: 5px;
             }
 
 
@@ -129,7 +144,17 @@
             
 <h1>some file</h1>
 <p>this is some other file that is being used as just a test file@
-</p> 
+</p>
+<pre><code>
+test code snippet
+</code></pre>
+<p><code>single backtick code block.</code>
+</p>
+<pre><code>more code
+def x(t):
+    return t*3 + 2
+print(yay)
+</code></pre>
 
             <!-- [end CONTENT] -->
 

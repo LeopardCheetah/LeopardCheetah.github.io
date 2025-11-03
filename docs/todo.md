@@ -6,25 +6,23 @@ done:
 - [x] turn -- or --- into em dashes  
 - [x] make the generator ACTUALLY turn `.md` into `.html` (as opposed to just adding the lines raw)    
 - [x] do a strikethrough (~~)     
+- [x] make code (`<code>`/`<pre>`) blocks actually look good (a.k.a. change the css so they don't stick out, add some margins, box outline/indent)    
+
 
 
 
 in progress/considering/whatever:   
-- [ ] make code (`<code>`/`<pre>`) blocks actually look good (a.k.a. change the css so they don't stick out, add some margins, box outline/indent)
 - [ ] make my 404 page look cooler 
 - [ ] make a custom 500 page (+ when would i need this)        
 - [ ] fix my broken shark favicon (does it need to be of type ico?) 
 
 
-md syntax: https://www.markdownguide.org/basic-syntax/
-testing html page: file:///C:/Users/flow/Desktop/code/gitstuff/LeopardCheetah.github.io/something.html
 generator specific:
 - [ ] do unordered lists
-- [ ] do images -- tihs will probably be done in text processing section
 - [ ] do links (href) -- this will probably be done in text processing section
 
 
-way later:   
+way later (aka never):   
 - [ ] add a stupid license
 - [ ] implement subpages (currently this is IMPOSSIBLE lmao)   
 - [ ] figure out what the escape character is happening
@@ -38,4 +36,5 @@ not doing:
 - [ ] turn this into a legit open src thing with good readmes + docs (or maybe rewrite this)
 - [ ] make block quotes be able to nest / be able to accomodate more than a quote in the block quote thing (bro just edit the html yourself)
 - [ ] ordered (numbered) lists. I just don't like them (change `<ul>` to `<ol>` if you're annoyed)
+- [ ] do images -- just do this manually ya bum
 

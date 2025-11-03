@@ -10,12 +10,12 @@ done:
 - [x] do unordered lists - NOTE: you cannot stack lists with other things or have sub-bullet points      
 - [x] do links (href) -- this will probably be done in text processing section
 - [x] add support for images.    
+- [x] fix my broken shark favicon (does it need to be of type ico?)    
 
 
 in progress/considering/whatever:   
 - [ ] make my 404 page look cooler 
 - [ ] make a custom 500 page (+ when would i need this)        
-- [ ] fix my broken shark favicon (does it need to be of type ico?) 
 
 
 ----

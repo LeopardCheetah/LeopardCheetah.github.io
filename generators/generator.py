@@ -66,6 +66,7 @@ def md_to_html(md):
     html = ['']
     global whitespace_chars
     _in_code_block = False
+    _in_list, _was_in_list = False, False # in unordered list, prev iteration was also in said list.
 
     for line_ind, line in enumerate(_md):
         hline = line # line after being html'd
@@ -75,26 +76,29 @@ def md_to_html(md):
             continue 
 
         # ???
-        if len(line) == 0:
-            # ???
-            # must be a newl char
+        if len(line) == 0 or len(line.strip()) == 0:
+            _in_list = False 
+            if _was_in_list:
+                html.append('</ul>')
+                _was_in_list = False
+
             if len(_div_stack) and _div_stack[-1] == 'p':
                 _div_stack.pop()
                 html.append('</p>')
                 continue 
             continue
 
-        if len(line.strip()) == 0:
-            # ?????
-            if len(_div_stack) and _div_stack[-1] == 'p':
-                _div_stack.pop()
-                html.append('</p>')
-            
-            continue
+
 
         # check if its an hr
         # aka (***)/(___) (not --- here)
         if line.strip() == '*'*len(line.strip()) or line.strip() == '_'*len(line.strip()):
+            _in_list = False 
+            if _was_in_list:
+                html.append('</ul>')
+                _was_in_list = False
+
+                
             # add hr and call it a day
             # unpop all divs rq
             s = ''
@@ -140,7 +144,7 @@ def md_to_html(md):
             flag = 0
 
 
-        # replace line above with a header
+        # replace line above with a header version
         if flag and line_ind and not _in_code_block:
             if len(html) > 5:
                 if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>' or html[-1].strip() == '</p>':
@@ -199,12 +203,21 @@ def md_to_html(md):
 
         
             
-
+        # check if in list - the bullet point and the space
+        _in_list = len(hline.strip()) > 2 and hline.strip()[0] in ['-', '+', '*'] and hline.strip()[1] == ' '
+        if _in_list:
+            hline = hline[2:] # remove bullet point + space preceding
+        
+        if _was_in_list and not _in_list:
+            # end the list :(
+            html.append(f'</ul>')
+            _was_in_list = False 
+            # no continue since this code gotta continue on with the execution
 
 
         #########################
-        # basic text processing
-        ##########################
+        # basic text processing #
+        #########################
         # turn `` into code, ** into bold/it/both, etc.
         # also turn double/triple dashes into em dashes
 
@@ -379,12 +392,22 @@ def md_to_html(md):
         
 
 
-
-
-
-
         # assume all emblishments (italics, line breaks, bullets) are added
-        # and you just want a plain old paragraph
+        # check if in list and stuffs
+        if _in_list and not _was_in_list: # start a list!
+            html.append(f'<ul>')
+            html.append(f'<li>{hline}</li>')
+            
+            _was_in_list = True 
+            continue 
+    
+        if _in_list and _was_in_list: # continue the list!
+            html.append(f'<li>{hline}</li>')
+            # was in list is true and remains true
+            continue 
+
+
+        # assume you just want a plain old paragraph
         # :D
         if len(_div_stack) == 0:
             if '</pre>' in hline:
@@ -426,8 +449,9 @@ def md_to_html(md):
         print('Warning!! -- something weird is happening')
         print(f'trying to make p object on line {line_ind} with the line text being {line} but there\'s some stuff in the way')
         print()
-
         print(_div_stack)
+        print()
+
         for i in range(len(_div_stack)):
             
             # do back to front

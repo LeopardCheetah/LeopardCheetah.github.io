@@ -6,8 +6,8 @@ done:
 - [x] turn -- or --- into em dashes  
 - [x] make the generator ACTUALLY turn `.md` into `.html` (as opposed to just adding the lines raw)    
 - [x] do a strikethrough (~~)     
-- [x] make code (`<code>`/`<pre>`) blocks actually look good (a.k.a. change the css so they don't stick out, add some margins, box outline/indent)    
-
+- [x] make code (`<code>`/`<pre>`) blocks actually look good (a.k.a. change the css so they don't stick out, add some margins, box outline/indent)      
+- [x] do unordered lists - NOTE: you cannot stack lists with other things or have sub-bullet points    
 
 
 
@@ -18,9 +18,9 @@ in progress/considering/whatever:
 
 
 generator specific:
-- [ ] do unordered lists
 - [ ] do links (href) -- this will probably be done in text processing section
 
+----
 
 way later (aka never):   
 - [ ] add a stupid license

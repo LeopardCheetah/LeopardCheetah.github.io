@@ -7,7 +7,8 @@ done:
 - [x] make the generator ACTUALLY turn `.md` into `.html` (as opposed to just adding the lines raw)    
 - [x] do a strikethrough (~~)     
 - [x] make code (`<code>`/`<pre>`) blocks actually look good (a.k.a. change the css so they don't stick out, add some margins, box outline/indent)      
-- [x] do unordered lists - NOTE: you cannot stack lists with other things or have sub-bullet points    
+- [x] do unordered lists - NOTE: you cannot stack lists with other things or have sub-bullet points      
+- [x] do links (href) -- this will probably be done in text processing section
 
 
 
@@ -16,9 +17,6 @@ in progress/considering/whatever:
 - [ ] make a custom 500 page (+ when would i need this)        
 - [ ] fix my broken shark favicon (does it need to be of type ico?) 
 
-
-generator specific:
-- [ ] do links (href) -- this will probably be done in text processing section
 
 ----
 

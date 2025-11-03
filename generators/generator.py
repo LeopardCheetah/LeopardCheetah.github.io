@@ -367,6 +367,57 @@ def md_to_html(md):
         ########### end basic text processing ###############
 
 
+        #### process links #######
+
+        # part 1: check to see if theres anything of the form [a](b)
+        # part 2: convert to links
+        _link_indices = [] 
+        for i, v in enumerate(list(hline)):
+            if v == '[' and len(_link_indices) % 4 == 0:
+                _link_indices.append(i)
+                continue 
+
+            if v == ']' and len(_link_indices) % 4 == 1:
+                if len(hline) > i + 1 and hline[i + 1] == '(':
+                    _link_indices.append(i) 
+                    _link_indices.append(i + 1)
+                    continue 
+                
+                _link_indices.pop() # remove the last element in the list
+                continue 
+            
+            if len(_link_indices) % 4 == 3 and v == ')':
+                _link_indices.append(i)
+                continue 
+
+            continue 
+
+        _link_indices = _link_indices[:(len(_link_indices) // 4)*4] # get rid of last n (n < 4) elements if they exist (the ones hanging on)
+
+        # process each link index thing.
+        # wlog if indices i < j, then l[i] < l[j].
+        
+        # do from BACK TO FRONT. (else string indices get fucked)
+        for i in range(len(_link_indices) // 4):
+            # 4*(max_i - i) + 0/1/2/3. 
+            _sq_br_l = _link_indices[len(_link_indices) - 4*(1 + i)]
+            _sq_br_r = _link_indices[len(_link_indices) - 4*(1 + i) + 1]
+            _par_r = _link_indices[len(_link_indices) - 4*(1 + i) + 3]
+
+
+            _ref_text = hline[_sq_br_l + 1:_sq_br_r]
+            _link = hline[_sq_br_r + 2:_par_r]
+
+            # essentially, replace the whole part of hl
+            # indices to replace are from sq_br_l to _par_r onwards
+            # +1 for the parentheses.
+            hline = hline[:_sq_br_l] + f'<a href="{_link}">{_ref_text}</a>' + hline[_par_r + 1:]  
+            continue 
+
+
+        #### end link processing #######
+
+
         # check header
         flag = 0 
         for i in range(1, 7):

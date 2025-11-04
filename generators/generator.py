@@ -478,6 +478,9 @@ def md_to_html(md):
 
         # assume you just want a plain old paragraph
         # :D
+        # TODO - fix this fucking bullshit - can't fucking indent lines correctly and shit
+        # maybe i should just rewrite this fucking repo
+        # refactor this bullshit
         if len(_div_stack) == 0:
             if '</pre>' in hline:
                 # yikes; push with caution
@@ -490,11 +493,13 @@ def md_to_html(md):
             continue 
 
         if _div_stack[-1] == 'p' and len(_div_stack) == 1:
+            print('a!', html, _md, line_ind)
             _div_stack.pop()
             # nice, just add in the text that you have
 
             # with a line break (maybe, go search for it)
-            if len(_md[line_ind - 1]) < 3:
+            if len(_md[line_ind - 1]) > 3:
+                print('b')
                 if _md[line_ind - 1][-2:] == '  ' or _md[line_ind - 1][-2:] == r'\\' or md[line_ind - 1][-1][-3:] == r'\\ ': # add in a line break
                     html.append('<br>')
 
@@ -588,7 +593,6 @@ def main():
 
         file = []
 
-        ctnt = []
         lines = p[1]
         md_lines = []
 
@@ -819,8 +823,9 @@ def main():
 
 
 if __name__ == '__main__':
-    print('\n------------------------------------')
+    print('\n\n------------------------------------')
     main()  
+    print('============================================\n\n')
 
 
 

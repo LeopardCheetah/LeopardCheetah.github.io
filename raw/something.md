@@ -2,31 +2,14 @@ TEMPLATE: base
 PAGETITLE: something
 -x-x-x-x-
 
-# some file
+# Something
 
-this is some other file that is being used as just a test file@
+Wow you found my test file! Congrats.         
+This file is here for legacy and sentimental reasons I suppose.
 
-```
-test code snippet
-```
-
-`single backtick code block.`
-
-```more code
-def x(t):
-    return t*3 + 2
-
-print(yay)
-```
-
-- a 
-- b 
-- c
-
-- d
--e
-
-
-this is a [test link](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content/Creating_links) to some [mozilla docs](https://www.markdownguide.org/basic-syntax/).
-
-help ![asset test](/assets/test_asset.png)
+test a    
+test b    
+test c 
+test d
+test ee   
+test f

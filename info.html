@@ -140,26 +140,73 @@
             <!-- [CONTENT] -->
             
 <h1>Website Information</h1>
-<p>Updated: 11/26/2025
+<p>Last updated: 11/26/2025
 </p>
 <hr />
 
+<p>Inspiration for my website taken from Flask, Hugo, <a href="https://github.com/ukarim">ukarim</a>, and <a href="https://logangraves.com/website">Logan Graves</a>.
+</p>
 <h3>Motivation</h3>
-<p>I decided to rewrite my website because I wanted to make it better (and to not write html). From my brief overview, it seemed like the things I could do were (ranked from most to least abstraction):    
-<br>
-1. Use Hugo. Hugo is a static site generator and abstracts hard stuff away, but it does require a software installation :/     
+<p>I decided to rewrite my website because I wanted to make it better (and to not write in html). From my brief overview, it seemed like the things I could do were (ranked from most to least abstraction):    
+</p>
+<p>1. Use Hugo. Hugo is a static site generator and abstracts hard stuff away, but it does require a software installation :/     
 <br>
 2. Use flask. I have some previous experience with it (see PAIR) but flask can be dynamic so it can't really be hosted with github pages :<.     
 <br>
 3. Write my site from scratch.
 </p>
-<p>So of course I went with option 3.
+<p>And I went with option 3.
 </p>
-<p>Now, this website is being served to you from Github pages.
+<p>As a result, the website you're reading was/is originally a markdown file that got converted into a static html file that is getting served to your computer by Github Pages and stuff.
 </p>
-<p>Most likely I'll make my site something like flask but for static websites &ndash; there are some set HTML templates for overall website structure, and content is filled in accordingly by running some sort of script. The pipeline then to making a page would be <em>create/find HTML template</em> -> <em>make md file</em> -> <em>run script to generate static html file from template and md file</em> (and then profit).
+<hr />
+
+<h2>Structure</h2>
+<p>All markdown files that make up this website (including this one) are in a folder called <code>raw/</code> (e.g. the markdown that was used to generate this file is called <code>raw/info.md</code>). In each of these <code>.md</code> files, there's a brief 3-line header with some meta-info detailing how exactly to turn the <code>.md</code> file into <code>.html</code>. The rest of the <code>.md</code> file is the webpage's content, and is written in regular[1] markdown. 
 </p>
-<p>Inspiration taken from Flask, Hugo, <a href="https://github.com/ukarim">ukarim</a>, and <a href="https://logangraves.com/website">Logan Graves</a>.
+<p>([1]: With some caveats. I found ordered lists too hard to implemnt so that along with footnotes and nested block quotes are unimplemented. Also of course specific ambiguous markdown lines can probably confuse my primitive programming so the bottom line is that clear, boring, and simple markdown files will have no problem being turned into html files.)
+</p>
+<p>Specificallly, the brief 3-line header should look something like this (this is the header used to generate this file):
+</p>
+<pre><code>TEMPLATE: base
+PAGETITLE: Website Info :)
+</code></pre>
+<p>The first line (<code>TEMPLATE: base</code>) tells the generator program which html template should be used when generating the <code>.html</code> file. All <code>.html</code> templates should be located in <code>generators/templates/</code> and a different template will correspond to different css code and html layout.      
+<br>
+The second line (<code>PAGETITLE: Website Info :)</code>) ends up being the corresponding webpage's page title (Look up! Next to to the shark favicon should be some text that says "Website Info". That's what this line does).    
+<br>
+The third and final line of barbed wire is simply a delimiter that the generator program looks for to confirm that the file header is done. And the fourth line (which should be empty) is a mandatory spacer.
+</p>
+<p>Generally, page content should be changed in the corresponding <code>.md</code> file, while the overall page structure should be changed in the template <code>.html</code> file. The only caveat to this is the navigation bar; that's hard coded in the presets section of the webpage generator (located at the top of <code>generators/generator.py</code>). 
+</p>
+<p>Also note that any files that start with an underscore character in <code>raw/</code> are ignored. This is useful for archiving past drafts and markdown  templates.
+</p>
+<hr />
+
+<h2>Build</h2>
+<h4>Prerequisites</h4>
+<p>Some prerequisites to help you succeed with this project:
+</p>
+<ul>
+<li>Be familiar with Python (or have your code machine generator be familiar with Python)</li>
+<li>Be somewhat familiar with HTML</li>
+<li>Have the patience to debug someone else's code</li>
+<li>Have Python >= 3.9.6 (this is arbitrary - I just like Python 3.9)</li>
+</ul>
+<h4>Build</h4>
+<p>To build this exact repository (Note: I have not figured out ordered lists so an unordered one must do for now):
+<ul>
+<li>Clone this repository (<code>git clone https://github.com/LeopardCheetah/LeopardCheetah.github.io.git</code>).</li>
+<li>Replace all markdown files in <code>raw/</code> with <strong>your own</strong> markdown files. Remember to follow the spec as labelled above!</li>
+<li>Replace all template files in <code>generators/templates/</code> with your own template html files. </li>
+<li>Change the specific presets located at the top of <code>generators/generator.py</code> to your own presets. Mainly change that nav bar.</li>
+<li>Run the python file in <code>generators/generator.py</code>. This should turn all your <code>.md</code> files into corresponding <code>.html</code> files that will end up in the repo home directory.</li>
+<li>Profit!</li>
+</ul>
+</p>
+<p>I obviously cannot promise that every markdown file will generate properly with my program, so to any brave soul who attempts to use my code, know that I am both happy that you're using my code and also that there will need to be some debugging done if you want a good website. 
+</p>
+<p>Anyways, go out there and go make your own website, no matter how simple it is. I'm sure it'll be great :).
 </p> 
 
             <!-- [end CONTENT] -->

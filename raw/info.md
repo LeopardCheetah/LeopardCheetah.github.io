@@ -25,13 +25,13 @@ As a result, the website you're reading was/is originally a markdown file that g
 
 ## Structure
 
-All markdown files that make up this website (including this one) are in a folder called `raw/` (e.g. the markdown that was used to generate this file is called `raw/info.md`). In each of these `.md` files, there's a brief 3-line header with some meta-info detailing how exactly to turn the `.md` file into `.html`. The rest of the `.md` file is the webpage's content, and is written in regular* markdown. 
+All markdown files that make up this website (including this one) are in a folder called `raw/` (e.g. the markdown that was used to generate this file is called `raw/info.md`). In each of these `.md` files, there's a brief 3-line header with some meta-info detailing how exactly to turn the `.md` file into `.html`. The rest of the `.md` file is the webpage's content, and is written in regular[1] markdown. 
 
 ([1]: With some caveats. I found ordered lists too hard to implemnt so that along with footnotes and nested block quotes are unimplemented. Also of course specific ambiguous markdown lines can probably confuse my primitive programming so the bottom line is that clear, boring, and simple markdown files will have no problem being turned into html files.)
 
 Specificallly, the brief 3-line header should look something like this (this is the header used to generate this file):
-```
-TEMPLATE: base
+
+```TEMPLATE: base
 PAGETITLE: Website Info :)
 -x-x-x-x-
 ```
@@ -60,10 +60,14 @@ Some prerequisites to help you succeed with this project:
 
 #### Build
 
-To build this exact repository (Note: I have not figured out ordered list so the formatting will be slightly sad for now):
-    1. Clone this repository (`git clone https://github.com/LeopardCheetah/LeopardCheetah.github.io.git`).
-    2. Replace all markdown files in `raw/` with **your own** markdown files. Remember to follow the spec as labelled above!
-    3. Replace all template files in `generators/templates/` with your own template html files. 
-    4. Change the specific presets located at the top of `generators/generator.py` to your own presets. Mainly change that nav bar.
-    5. Run the python file in `generators/generator.py`. This should turn all your `.md` files into corresponding `.html` files that will end up in the repo home directory.
-    6. Profit!
+To build this exact repository (Note: I have not figured out ordered lists so an unordered one must do for now):
+- Clone this repository (`git clone https://github.com/LeopardCheetah/LeopardCheetah.github.io.git`).
+- Replace all markdown files in `raw/` with **your own** markdown files. Remember to follow the spec as labelled above!
+- Replace all template files in `generators/templates/` with your own template html files. 
+- Change the specific presets located at the top of `generators/generator.py` to your own presets. Mainly change that nav bar.
+- Run the python file in `generators/generator.py`. This should turn all your `.md` files into corresponding `.html` files that will end up in the repo home directory.
+- Profit!
+
+I obviously cannot promise that every markdown file will generate properly with my program, so to any brave soul who attempts to use my code, know that I am both happy that you're using my code and also that there will need to be some debugging done if you want a good website. 
+
+Anyways, go out there and go make your own website, no matter how simple it is. I'm sure it'll be great :).

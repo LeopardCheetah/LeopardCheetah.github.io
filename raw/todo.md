@@ -19,10 +19,9 @@ done:
 - [x] add support for images.    
 - [x] fix my broken shark favicon (does it need to be of type ico?)    
 - [x] make my 404 page look cooler 
+- [x] make a custom 500 page (it's still unclear when i'll ever need this) 
 
-in progress/considering/whatever:   
-
-- [ ] make a custom 500 page (+ when would i need this)        
+       
 
 
 ----

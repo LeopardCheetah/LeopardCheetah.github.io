@@ -1,3 +1,19 @@
 so
 i didnt add a way to put "comments" in the md generation files
 so I guess this .txt file will have to do - to track all the notes among each of the files and things like that.
+
+anyways....
+
+
+#################################
+
+pages to write on my website:
+> projects.md - detail some projects i do and maybe link to subpages
+>>> yes yes subpages idk how that'll work but it will trust.
+> index.md (WIP) - literally me 
+> about me.md - about me but in some more detail? idk also maybe put some lists of stuff i like (books -> bearblog, people and their blogs) + some contact info would be great too maybe
+>>> video games, music, fields of interest
+> pictures.md? - idk host some pictures of various places ive been and/or just cool pictures ive taken 
+> gear.md? - some products that ive liked 
+> places ive been.md - maybe just list/rank/whatever all the places ive been and talk about hte vibes.
+> things i like talking about / things i wish i'd been asked (logan graves)

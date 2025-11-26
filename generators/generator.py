@@ -279,6 +279,7 @@ def md_to_html(md):
                     _div_stack.pop()
                     _hline += '</code></pre>'
                     _in_code_block = False
+                    # code written by @LeopardCheetah
                     
 
                     continue 

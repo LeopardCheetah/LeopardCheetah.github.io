@@ -146,7 +146,12 @@ def md_to_html(md):
 
         # replace line above with a header version
         if flag and line_ind and not _in_code_block:
-            print(flag, line_ind, md)
+            
+            if line_ind < 5:
+                print(flag, line_ind)
+                print(html)
+                print()
+
             if len(html) > 5:
                 if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>' or html[-1].strip() == '</p>':
                     # already a header, pass
@@ -154,10 +159,20 @@ def md_to_html(md):
                     
                     if flag == 2:
                         html.append('<hr />')
+                        html.append('')
                         continue 
 
                     html.append('') # spacers are good
                     continue 
+            
+            if html[-1].strip() == '</p>':
+                # we just ending, add a thing
+                if flag:
+                    html.append('<hr />')
+                    html.append('')
+                    continue 
+
+                # uhhh dw about it
             
             # remove the <p> tag if that's lurking in here
             if html[-1][:3] == '<p>':

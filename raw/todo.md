@@ -1,3 +1,7 @@
+TEMPLATE: base
+PAGETITLE: Website todo list.
+-x-x-x-x-
+
 todo list:
 
 done:    
@@ -24,9 +28,9 @@ way later (aka never):
 
 - [ ] add a stupid license
 - [ ] implement subpages (currently this is IMPOSSIBLE lmao)   
-- [ ] figure out what the escape character is happening
+- [ ] figure out escape characters
 - [ ] implement custom tags! -- e.g. custom box tihngies that can be made during .md -> .html    
-- [ ] make my basic webpage be in the style of playing cards (consult drawings) 
+- [ ] make my basic webpage be in the style of playing cards (consult notebook drawings) 
 - [ ] add footnote support
  
 

@@ -18,10 +18,10 @@ done:
 - [x] do links (href) -- this will probably be done in text processing section
 - [x] add support for images.    
 - [x] fix my broken shark favicon (does it need to be of type ico?)    
-
+- [x] make my 404 page look cooler 
 
 in progress/considering/whatever:   
-- [ ] make my 404 page look cooler 
+
 - [ ] make a custom 500 page (+ when would i need this)        
 
 

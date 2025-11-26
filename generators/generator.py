@@ -159,7 +159,7 @@ def md_to_html(md):
                     html.append('') # spacers are good
                     continue 
             
-            if html[-1].strip() == '</p>':
+            if html[-1].strip() == '</p>' or line == '---' or line == '----':
                 # we just ending, add a thing
                 if flag:
                     html.append('<hr />')

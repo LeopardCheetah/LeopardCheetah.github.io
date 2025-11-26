@@ -1,0 +1,3 @@
+so
+i didnt add a way to put "comments" in the md generation files
+so I guess this .txt file will have to do - to track all the notes among each of the files and things like that.

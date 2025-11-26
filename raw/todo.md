@@ -2,7 +2,10 @@ TEMPLATE: base
 PAGETITLE: Website todo list.
 -x-x-x-x-
 
-todo list:
+
+# todo list
+
+#### caution: this file is meant to be viewed in its raw form
 
 done:    
 - [x] make my website (semi-functionally)    

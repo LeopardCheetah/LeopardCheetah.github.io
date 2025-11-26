@@ -1,8 +1,11 @@
 # LeopardCheetah.github.io
 my website (under construction)
 
-decided to rewrite my website. wish me luck.
+so it turns out de-scoping really helps with finishing projects.
 
-currently have no motivation to finish making my `.md` to `.html` generator. stay tuned. personal website coming soon (maybe).
 
---> I think I might abandon this just because I'm not having fun doing this anymore.
+All `.html` files in the home directory are part of the website, and the corresponding files used to generate them are in the `raw/` folder. The `.md` -> `.html` generator itself is located at `generators/generator.py` and some `.html` templates (just kidding there's only 1) are located at `generators/templates/`. 
+
+Website information is displayed on the website at `info.html` (`raw/info.md`), and the todo list for things to do is also up there (`todo.html`, `raw/todo.md`).
+
+

@@ -146,6 +146,7 @@ def md_to_html(md):
 
         # replace line above with a header version
         if flag and line_ind and not _in_code_block:
+            print(flag, line_ind, md)
             if len(html) > 5:
                 if html[-1][0] == '<' and html[-1][1] == 'h' and html[-1][3] == '>' or html[-1].strip() == '</p>':
                     # already a header, pass

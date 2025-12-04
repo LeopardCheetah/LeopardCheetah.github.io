@@ -7,6 +7,8 @@ Last updated: 11/26/2025
 
 ---
 
+This website is written from scratch.
+
 Inspiration for my website taken from Flask, Hugo, [ukarim](https://github.com/ukarim), and [Logan Graves](https://logangraves.com/website).
 
 ### Motivation

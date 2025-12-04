@@ -4,4 +4,5 @@ PAGETITLE: Alex Z
 
 # Alex Z
 
-this is what i have written here currently.
+Unfortunately, my website is currently under construction.      
+Check out how I built the website [here](info.html)!

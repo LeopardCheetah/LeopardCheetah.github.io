@@ -1,0 +1,29 @@
+in progress:
+
+> about me.md - about me but in some more detail? idk also maybe put some lists of stuff i like (books -> bearblog, people and their blogs) + some contact info would be great too maybe
+
+
+
+======================
+todo:
+
+
+pages to write on my website:
+
+> projects.md - detail some projects i do 
+>>> just link it directly to other pages (e.g. website.md, poker.md, etc.)
+> index.md (WIP) - literally me 
+>>> video games, music, fields of interest
+> pictures.md? - idk host some pictures of various places ive been and/or just cool pictures ive taken 
+> gear.md? - some products that ive liked 
+> places ive been.md - maybe just list/rank/whatever all the places ive been and talk about hte vibes.
+> things i like talking about / things i wish i'd been asked (logan graves)
+> screenshots.md ==> see guzey's thing on it but just a buncha vibe screenshots arranged in a vibe order and stuff
+
+> tribute to calvin and hobbes page?
+
+
+
+- integrate everything into the index.md page.
+
+

@@ -4,5 +4,7 @@ PAGETITLE: Alex Z
 
 # Alex Z
 
+---
+
 Unfortunately, my website is currently under construction.      
-Check out how I built the website [here](info.html)!
+Check out some information about how I built my website [here](website_info.html)!

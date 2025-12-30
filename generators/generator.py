@@ -10,7 +10,7 @@ if it doesn't it fails noisely (i hope)
 # what's on the nav bar left/right?
 # format: (Descriptor, link, flag)
 # flag -- 0 -> relative link (may need ..); 1 -> absolute link (is constant)
-nav_bar_left = [("Home", r"https://leopardcheetah.github.io/", 1), ("Projects", r"https://leopardcheetah.github.io/projects.html", 1)]
+nav_bar_left = [("Home", r"https://leopardcheetah.github.io/", 1), ("About Me", r"https://leopardcheetah.github.io/about.html", 1)]
 nav_bar_right = [("Github", "https://github.com/LeopardCheetah", 1), ("Resume", r"assets\resume.pdf", 0), ("Blog", "https://thelonewolf.bearblog.dev", 1)]
 nav_bar_delimiter = "|" # separator between elements
 

@@ -10,6 +10,8 @@ todo:
 
 pages to write on my website:
 
+< see logan graves' page for inspiration. >
+
 > projects.md - detail some projects i do 
 >>> just link it directly to other pages (e.g. website.md, poker.md, etc.)
 > index.md (WIP) - literally me 
@@ -22,8 +24,15 @@ pages to write on my website:
 
 > tribute to calvin and hobbes page?
 
-
-
 - integrate everything into the index.md page.
 
+========================================================
+ideas:
 
+- make my website look better. Move the margins out, do less, make things simpler. 
+=> add my own "twist" / "flair" to my website.
+
+- make generator.py correspondingly delete pages if the corresponding .md file doesn't exist 
+=> or just make it delete all .html files and regenerate them from scratch each time.
+
+- (maybe) rewrite generator.py? actually parse those hard things that were unparsable.

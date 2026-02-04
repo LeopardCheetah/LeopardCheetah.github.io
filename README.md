@@ -1,8 +1,14 @@
 # LeopardCheetah.github.io
 my website (under construction)
 
+---
+
 so it turns out de-scoping really helps with finishing projects.
 
+
+Welcome to the code for my website! The architecture/schema/how this website works can be found [on my website](https://leopardcheetah.github.io/website_info.html).
+
+---
 
 All `.html` files in the home directory are part of the website, and the corresponding files used to generate them are in the `raw/` folder. The `.md` -> `.html` generator itself is located at `generators/generator.py` and some `.html` templates (just kidding there's only 1) are located at `generators/templates/`. 
 

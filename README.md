@@ -1,6 +1,6 @@
 # LeopardCheetah.github.io
-my website (under construction)
+my website (actually under construction this time)
 
 ---
 
-something something having a website is cool so i guess im building one
+come back later to see my website :)
